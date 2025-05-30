@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email & Name Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    select, input[type="text"], button {
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      font-size: 1em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .output {
+      background: #f8f8f8;
+      padding: 14px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1.1em;
+      word-wrap: break-word;
+      min-height: 20px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border: none;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.3em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>🎲 Tạo Email và Tên Ngẫu Nhiên</h2>
+
+    <label for="domainSelect">Chọn domain mail:</label>
+    <select id="domainSelect" onchange="toggleCustomDomain()">
+      <option value="gmail.com">gmail.com</option>
+      <option value="yahoo.com">yahoo.com</option>
+      <option value="hotmail.com">hotmail.com</option>
+      <option value="outlook.com">outlook.com</option>
+      <option value="custom">-- Nhập domain tùy chỉnh --</option>
+    </select>
+
+    <input type="text" id="customDomainInput" placeholder="Nhập domain tùy chỉnh..." style="display:none;" />
+
+    <div class="output" id="emailOutput">Email ngẫu nhiên sẽ hiển thị tại đây</div>
+    <button onclick="generateRandomEmail()">📧 Tạo Email Ngẫu Nhiên</button>
+    <button onclick="copyToClipboard('emailOutput')">📋 Sao chép Email</button>
+
+    <hr style="margin: 20px 0;">
+
+    <div class="output" id="nameOutput">Tên ngẫu nhiên sẽ hiển thị tại đây</div>
+    <button onclick="generateRandomName()">👤 Tạo Tên Ngẫu Nhiên</button>
+    <button onclick="copyToClipboard('nameOutput')">📋 Sao chép Tên</button>
+  </div>
+
+  <script>
+    const names = [
+      "Alex", "Liam", "Emma", "Olivia", "Noah", "Ava", "William", "Sophia", "James", "Isabella",
+      "Benjamin", "Mia", "Lucas", "Charlotte", "Henry", "Amelia", "Alexander", "Evelyn", "Michael", "Abigail",
+      "Daniel", "Ella", "Matthew", "Scarlett", "Jackson", "Grace", "Sebastian", "Chloe", "Jack", "Victoria",
+      "Aiden", "Riley", "Owen", "Lily", "Samuel", "Hannah", "David", "Zoe", "Joseph", "Nora",
+      "Carter", "Layla", "Wyatt", "Ellie", "John", "Lillian", "Leo", "Addison", "Isaac", "Aubrey",
+      "Nathan", "Brooklyn", "Isaiah", "Paisley", "Caleb", "Savannah", "Christian", "Skylar", "Thomas", "Camila",
+      "Hunter", "Aria", "Eli", "Penelope", "Jonathan", "Claire", "Connor", "Stella", "Aaron", "Lucy",
+      "Adrian", "Aaliyah", "Charles", "Kennedy", "Jeremiah", "Madelyn", "Cameron", "Bella", "Ezekiel", "Aurora",
+      "Colton", "Natalie", "Asher", "Leah", "Miles", "Audrey", "Robert", "Anna", "Jameson", "Hailey",
+      "Brayden", "Violet", "Nicholas", "Sadie", "Greyson", "Caroline", "Cooper", "Allison", "Ian", "Genesis",
+      "Carson", "Ariana", "Easton", "Elena", "Jaxson", "Gabriella", "Everett", "Naomi", "Parker", "Alice"
+      // Thêm tên nếu cần đủ 500
+    ];
+
+    function toggleCustomDomain() {
+      const select = document.getElementById("domainSelect");
+      const input = document.getElementById("customDomainInput");
+      input.style.display = (select.value === "custom") ? "block" : "none";
+    }
+
+    function getRandomSuffix() {
+      return Math.floor(Math.random() * 900 + 10); // 2–3 chữ số
+    }
+
+    function getDomain() {
+      const select = document.getElementById("domainSelect");
+      if (select.value === "custom") {
+        const custom = document.getElementById("customDomainInput").value.trim();
+        if (!custom) {
+          alert("Vui lòng nhập domain tùy chỉnh!");
+          return null;
+        }
+        return custom;
+      } else {
+        return select.value;
+      }
+    }
+
+    function generateRandomEmail() {
+      const name = names[Math.floor(Math.random() * names.length)];
+      const suffix = getRandomSuffix();
+      const domain = getDomain();
+      if (!domain) return;
+
+      const email = `${name.toLowerCase()}${suffix}@${domain}`;
+      document.getElementById("emailOutput").innerText = email;
+    }
+
+    function generateRandomName() {
+      const name = names[Math.floor(Math.random() * names.length)];
+      document.getElementById("nameOutput").innerText = name;
+    }
+
+    function copyToClipboard(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Đã sao chép: " + text);
+      });
+    }
+  </script>
+</body>
+</html>
