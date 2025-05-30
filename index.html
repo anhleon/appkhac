@@ -58,6 +58,21 @@
       background-color: #0056b3;
     }
 
+    .popup {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #28a745;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+
     @media (max-width: 600px) {
       h2 {
         font-size: 1.3em;
@@ -82,15 +97,15 @@
     <input type="text" id="customDomainInput" placeholder="Nhập domain tùy chỉnh..." style="display:none;" />
 
     <div class="output" id="emailOutput">Email ngẫu nhiên sẽ hiển thị tại đây</div>
-    <button onclick="generateRandomEmail()">📧 Tạo Email Ngẫu Nhiên</button>
-    <button onclick="copyToClipboard('emailOutput')">📋 Sao chép Email</button>
+    <button onclick="generateRandomEmail()">📧 Tạo Email & Sao chép</button>
 
     <hr style="margin: 20px 0;">
 
     <div class="output" id="nameOutput">Tên ngẫu nhiên sẽ hiển thị tại đây</div>
-    <button onclick="generateRandomName()">👤 Tạo Tên Ngẫu Nhiên</button>
-    <button onclick="copyToClipboard('nameOutput')">📋 Sao chép Tên</button>
+    <button onclick="generateRandomName()">👤 Tạo Tên & Sao chép</button>
   </div>
+
+  <div class="popup" id="popup">📋 Đã sao chép!</div>
 
   <script>
     const names = [
@@ -103,9 +118,7 @@
       "Hunter", "Aria", "Eli", "Penelope", "Jonathan", "Claire", "Connor", "Stella", "Aaron", "Lucy",
       "Adrian", "Aaliyah", "Charles", "Kennedy", "Jeremiah", "Madelyn", "Cameron", "Bella", "Ezekiel", "Aurora",
       "Colton", "Natalie", "Asher", "Leah", "Miles", "Audrey", "Robert", "Anna", "Jameson", "Hailey",
-      "Brayden", "Violet", "Nicholas", "Sadie", "Greyson", "Caroline", "Cooper", "Allison", "Ian", "Genesis",
-      "Carson", "Ariana", "Easton", "Elena", "Jaxson", "Gabriella", "Everett", "Naomi", "Parker", "Alice"
-      // Thêm tên nếu cần đủ 500
+      "Brayden", "Violet", "Nicholas", "Sadie", "Greyson", "Caroline", "Cooper", "Allison", "Ian", "Genesis"
     ];
 
     function toggleCustomDomain() {
@@ -140,18 +153,27 @@
 
       const email = `${name.toLowerCase()}${suffix}@${domain}`;
       document.getElementById("emailOutput").innerText = email;
+      copyToClipboard(email);
     }
 
     function generateRandomName() {
       const name = names[Math.floor(Math.random() * names.length)];
       document.getElementById("nameOutput").innerText = name;
+      copyToClipboard(name);
     }
 
-    function copyToClipboard(elementId) {
-      const text = document.getElementById(elementId).innerText;
+    function copyToClipboard(text) {
       navigator.clipboard.writeText(text).then(() => {
-        alert("Đã sao chép: " + text);
+        showPopup();
       });
+    }
+
+    function showPopup() {
+      const popup = document.getElementById("popup");
+      popup.style.display = "block";
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 2000);
     }
   </script>
 </body>
